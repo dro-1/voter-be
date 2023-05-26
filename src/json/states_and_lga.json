@@ -1,0 +1,39 @@
+{
+    "Abia": [
+      "Aba North",
+      "Aba South",
+      "Arochukwu",
+      "Bende",
+      "Ikwuano",
+      "Ohafia",
+      "Ugwueke"
+    ],
+    "Rivers": [
+      "Ahoada East",
+      "Ahoada West",
+      "Andoni",
+      "Bonny",
+      "Degema",
+      "Eleme",
+      "Ikwerre"
+    ],
+    "Lagos": [
+      "Agege",
+      "Alimosho",
+      "Badagry",
+      "Ikorodu",
+      "Ojo",
+      "Oshodi-Isolo",
+      "Surulere"
+    ],
+    "Oyo": [
+      "Afijio",
+      "Akinyele",
+      "Atibo",
+      "Egbeda",
+      "Ido",
+      "Irepo",
+      "Iseyin",
+      "Itesiwaju"
+    ]
+  }
