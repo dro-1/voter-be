@@ -2,15 +2,25 @@ const mongoose = require("mongoose");
 
 const Schema = mongoose.Schema;
 
+const ELECTION_POSTS = [
+  "Presidential",
+  "Gubernatorial",
+  "Local Government Chairman",
+];
+
 const electionSchema = new Schema({
   post: {
     required: true,
     type: String,
+    enum: ELECTION_POSTS,
   },
-  isLocked: {
-    required: true,
-    type: Boolean,
-    default: true,
+  state: {
+    ref: "State",
+    type: Schema.Types.ObjectId,
+  },
+  lga: {
+    ref: "LGA",
+    type: Schema.Types.ObjectId,
   },
   candidates: [
     {
@@ -32,4 +42,7 @@ const electionSchema = new Schema({
   ],
 });
 
-module.exports = { Election: mongoose.model("Election", electionSchema) };
+module.exports = {
+  Election: mongoose.model("Election", electionSchema),
+  ELECTION_POSTS,
+};

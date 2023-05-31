@@ -44,6 +44,10 @@ const voterSchema = new Schema({
     type: String,
     required: true,
   },
+  votedElections: {
+    type: Schema.Types.ObjectId,
+    ref: "Election",
+  },
 });
 
 module.exports = {
