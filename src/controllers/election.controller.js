@@ -233,7 +233,7 @@ const vote = async (req, res) => {
     }
   }
 
-  if (election.post === ELECTION_POSTS.PRESIDENTIAL) {
+  if (election.post === ELECTION_POSTS.LGA) {
     try {
       voter.hasVoted.lga = true;
       await voter.save();
