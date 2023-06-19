@@ -7,6 +7,10 @@ const stateRouter = Router();
 
 stateRouter.post("/", stateController.createState);
 
+stateRouter.get("/", stateController.getStates);
+
+stateRouter.get("/:stateId/lga", stateController.getStateLGAs);
+
 module.exports = {
   stateRouter,
 };

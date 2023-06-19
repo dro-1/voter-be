@@ -8,6 +8,7 @@ const { electionRouter } = require("./routes/election.route");
 const { partyRouter } = require("./routes/party.route");
 const { stateController } = require("./controllers/state.controller");
 const { voterRouter } = require("./routes/voter.route");
+const { adminRouter } = require("./routes/admin.route");
 
 const app = express();
 
@@ -15,11 +16,13 @@ app.use(cors());
 
 app.use(express.json());
 
-app.get("/load", stateController.loadStates);
+app.get("/load", stateController.loadStatesAndLgas);
 
 app.use("/state", stateRouter);
 
 app.use("/voter", voterRouter);
+
+app.use("/admin", adminRouter);
 
 app.use("/lga", lgaRouter);
 

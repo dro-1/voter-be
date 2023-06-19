@@ -6,6 +6,8 @@ const {
   sendMissingPropertyError,
   sendSuccessMessage,
   sendError,
+  sendSuccess,
+  sanitizeParty,
 } = require("../utils/utils");
 
 const createParty = async (req, res) => {
@@ -88,8 +90,22 @@ const createParty = async (req, res) => {
   }
 };
 
+const getParties = async (req, res) => {
+  try {
+    let parties = await Party.find({});
+    sendSuccess(res, 200, {
+      message: "Succcess",
+      parties: parties.map(sanitizeParty),
+    });
+  } catch (e) {
+    console.log(e);
+    return sendGenericErrorMessage(res);
+  }
+};
+
 const partyController = {
   createParty,
+  getParties,
 };
 
 module.exports = {

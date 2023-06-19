@@ -1,18 +1,13 @@
 const mongoose = require("mongoose");
+const { ELECTION_POSTS } = require("../utils/utils");
 
 const Schema = mongoose.Schema;
-
-const ELECTION_POSTS = [
-  "Presidential",
-  "Gubernatorial",
-  "Local Government Chairman",
-];
 
 const electionSchema = new Schema({
   post: {
     required: true,
     type: String,
-    enum: ELECTION_POSTS,
+    enum: Object.values(ELECTION_POSTS),
   },
   state: {
     ref: "State",
@@ -21,6 +16,14 @@ const electionSchema = new Schema({
   lga: {
     ref: "LGA",
     type: Schema.Types.ObjectId,
+  },
+  startDate: {
+    type: Schema.Types.Date,
+    required: true,
+  },
+  endDate: {
+    type: Schema.Types.Date,
+    required: true,
   },
   candidates: [
     {
@@ -44,5 +47,4 @@ const electionSchema = new Schema({
 
 module.exports = {
   Election: mongoose.model("Election", electionSchema),
-  ELECTION_POSTS,
 };

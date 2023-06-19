@@ -6,7 +6,6 @@ const lgaSchema = new Schema({
   name: {
     required: true,
     type: String,
-    unique: true,
   },
   state: {
     type: Schema.Types.ObjectId,
@@ -16,7 +15,7 @@ const lgaSchema = new Schema({
   gubernatorial: {
     type: Schema.Types.Mixed,
     total: {
-      required: true,
+      default: 0,
       type: Number,
     },
     // All parties will be added as fields here

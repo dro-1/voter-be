@@ -1,11 +1,14 @@
 const { default: axios } = require("axios");
 const jwt = require("jsonwebtoken");
+const bcrypt = require("bcrypt");
 const {
   sendMissingPropertyError,
   sendGenericErrorMessage,
   sendSuccessMessage,
   sendError,
   sendSuccess,
+  getBaseNinUrl,
+  SALT_ROUNDS,
 } = require("../utils/utils");
 const { Voter } = require("../models/voter");
 
@@ -17,7 +20,7 @@ const registerVoter = async (req, res) => {
   let person;
   try {
     let resp = await axios.post(
-      "https://fake-nin.onrender.com/getPerson",
+      `${getBaseNinUrl()}/getPerson`,
       {
         nin,
         password,
@@ -32,10 +35,19 @@ const registerVoter = async (req, res) => {
     person = resp.data.person;
   } catch (e) {
     console.log(e.response);
-    if (e.response.status == 400 || e.response.status == 404) {
+    if (e?.response?.status == 400 || e?.response?.status == 404) {
       return sendError(res, e.response.status, e.response.data.message);
     }
 
+    return sendGenericErrorMessage(res);
+  }
+  let salt;
+  let hash;
+  try {
+    salt = await bcrypt.genSalt(SALT_ROUNDS);
+    hash = await bcrypt.hash(votingPassword, salt);
+  } catch (e) {
+    console.log(e);
     return sendGenericErrorMessage(res);
   }
 
@@ -48,8 +60,8 @@ const registerVoter = async (req, res) => {
     gender: person.gender,
     imageUrl: person.imageUrl,
     stateOfOrigin: person.stateOfOrigin,
-    lgaOfOrigin: person.firstName,
-    password: votingPassword,
+    lgaOfOrigin: person.lgaOfOrigin,
+    password: hash,
   });
 
   try {
@@ -74,13 +86,10 @@ const login = async (req, res) => {
     console.log(e);
     return sendGenericErrorMessage(res);
   }
-  console.log(voter);
   if (!voter) return sendError(res, 401, "Incorrect voter details");
 
-  console.log({ password });
-  console.log(voter.password);
-  if (voter.password != password)
-    return sendError(res, 401, "Incorrect voter details");
+  const isPasswordCorrect = await bcrypt.compare(password, voter.password);
+  if (!isPasswordCorrect) return sendError(res, 401, "Incorrect voter details");
 
   let authToken = jwt.sign(
     {
@@ -114,7 +123,7 @@ const refreshAuthToken = async (req, res) => {
 
   let authToken = jwt.sign(
     {
-      voterId: voter.id,
+      voterId: voter.voterId,
     },
     process.env.AUTH_KEY,
     { expiresIn: "1h" }

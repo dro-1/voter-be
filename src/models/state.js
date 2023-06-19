@@ -8,10 +8,16 @@ const stateSchema = new Schema({
     type: String,
     unique: true,
   },
+  lgas: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "LGA",
+    },
+  ],
   presidential: {
     type: Schema.Types.Mixed,
     total: {
-      required: true,
+      default: 0,
       type: Number,
     },
     // All parties will be added as fields here

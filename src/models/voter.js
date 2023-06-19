@@ -44,6 +44,20 @@ const voterSchema = new Schema({
     type: String,
     required: true,
   },
+  hasVoted: {
+    presidential: {
+      type: Boolean,
+      default: false,
+    },
+    state: {
+      type: Boolean,
+      default: false,
+    },
+    lga: {
+      type: Boolean,
+      default: false,
+    },
+  },
   votedElections: {
     type: Schema.Types.ObjectId,
     ref: "Election",

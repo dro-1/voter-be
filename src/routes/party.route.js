@@ -5,6 +5,8 @@ const partyRouter = express.Router();
 
 partyRouter.post("/", partyController.createParty);
 
+partyRouter.get("/", partyController.getParties);
+
 module.exports = {
   partyRouter,
 };
