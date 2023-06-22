@@ -64,6 +64,8 @@ const adminLogin = async (req, res) => {
   if (!isPasswordCorrect)
     return sendError(res, 404, "Incorrect login credentials");
 
+  //return sendSuccessMessage(res, 200, "passwords match");
+
   let authToken = jwt.sign(
     {
       adminId: admin.id,

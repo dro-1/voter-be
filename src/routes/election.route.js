@@ -12,6 +12,8 @@ electionRouter.get(
   electionController.fetchElections
 );
 
+electionRouter.get("/results", electionController.fetchElectionResults);
+
 electionRouter.post(
   "/vote",
   middlewares.checkVoterAuth,

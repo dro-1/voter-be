@@ -161,6 +161,31 @@ const fetchElections = async (req, res) => {
   }
 };
 
+const fetchElectionResults = async (req, res) => {
+  let elections;
+  try {
+    elections = await Election.find({})
+      .populate("state")
+      .populate("candidates.party")
+      .populate("lga");
+  } catch (e) {
+    console.log(e);
+    return sendGenericErrorMessage(res);
+  }
+
+  return sendSuccess(res, 200, {
+    elections: elections.map(sanitizePresidentialElection),
+  });
+
+  let states;
+  try {
+    states = await State.find({});
+  } catch (e) {
+    console.log(e);
+    return sendGenericErrorMessage(res);
+  }
+};
+
 const vote = async (req, res) => {
   let { electionId, partyAcronym } = req.body;
 
@@ -257,6 +282,7 @@ const electionController = {
   createElection,
   fetchElections,
   vote,
+  fetchElectionResults,
 };
 
 module.exports = {

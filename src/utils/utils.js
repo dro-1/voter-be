@@ -13,17 +13,24 @@ const sanitizeAdmin = (admin) => ({
   email: admin.email,
 });
 
-const sanitizePresidentialElection = (election) => ({
-  id: election.id,
-  post: election.post,
-  startDate: election.startDate,
-  endDate: election.endDate,
-  candidates: election.candidates.map(({ name, party, votes }) => ({
-    name,
-    party: sanitizeParty(party),
-    votes: votes.length,
-  })),
-});
+const sanitizePresidentialElection = (election) => {
+  let obj = {
+    id: election.id,
+    post: election.post,
+    startDate: election.startDate,
+    endDate: election.endDate,
+    candidates: election.candidates.map(({ name, party, votes }) => ({
+      name,
+      party: sanitizeParty(party),
+      votes: votes.length,
+    })),
+  };
+  if (typeof election.state === "object" && election.state !== null)
+    obj["state"] = sanitizeState(election.state);
+  if (typeof election.lga === "object" && election.lga !== null)
+    obj["lga"] = sanitizeLGA(election.lga);
+  return obj;
+};
 
 const sanitizeGubernatorialElection = (election) => {
   return {
@@ -123,7 +130,7 @@ const ELECTION_POSTS = {
 const PRESIDENTIAL_ELECTION_ICON =
   "https://www.nigerianembassy.co.il/wp-content/uploads/2019/04/flag.jpg";
 
-const SALT_ROUNDS = 16;
+const SALT_ROUNDS = 10;
 
 const JWT_ERRORS = ["TokenExpiredError"];
 
