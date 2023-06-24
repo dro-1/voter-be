@@ -75,7 +75,7 @@ const createElection = async (req, res) => {
     return sendGenericErrorMessage(res);
   }
 
-  if (presidentialElection)
+  if (presidentialElection && post === ELECTION_POSTS.PRESIDENTIAL)
     return sendError(res, 400, "There can be only 1 presidential election");
 
   let election = new Election({
@@ -177,7 +177,6 @@ const fetchElectionResults = async (req, res) => {
     elections: elections.map(sanitizePresidentialElection),
   });
 
-  let states;
   try {
     states = await State.find({});
   } catch (e) {

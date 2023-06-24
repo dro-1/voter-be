@@ -17,6 +17,15 @@ const registerVoter = async (req, res) => {
   const { nin, password, votingPassword } = req.body;
   if (!nin || !password || !votingPassword)
     return sendMissingPropertyError(res);
+
+  try {
+    let person = await Voter.findOne({ nin });
+    if (person)
+      return sendError(res, 400, "This voter has already been registered");
+  } catch (e) {
+    console.log(e);
+    return sendGenericErrorMessage(res);
+  }
   let person;
   try {
     let resp = await axios.post(

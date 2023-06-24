@@ -81,7 +81,7 @@ const loadStatesAndLgas = async (req, res) => {
   } catch (e) {
     console.log(e);
     console.log(e.response);
-    if (e.response.status == 400 || e.response.status == 404) {
+    if (e.response?.status == 400 || e.response?.status == 404) {
       return sendError(res, e.response.status, e.response.data.message);
     }
 
